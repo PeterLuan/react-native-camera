@@ -49,18 +49,31 @@ public class RCTCameraView extends ViewGroup {
         layoutViewFinder(left, top, right, bottom);
     }
 
-    @Override
-    public void onViewAdded(View child) {
-        if (this._viewFinder == child) return;
-        // remove and readd view to make sure it is in the back.
-        // @TODO figure out why there was a z order issue in the first place and fix accordingly.
-        this.removeView(this._viewFinder);
-        this.addView(this._viewFinder, 0);
-    }
+    // @Override
+    // public void onViewAdded(View child) {
+    //
+    //
+    //     if (this._viewFinder == child) return;
+    //     // remove and readd view to make sure it is in the back.
+    //     // @TODO figure out why there was a z order issue in the first place and fix accordingly.
+    //     this.removeView(this._viewFinder);
+    //     this.addView(this._viewFinder, 0);
+    // }
 
     public void setAspect(int aspect) {
         this._aspect = aspect;
         layoutViewFinder();
+    }
+
+    public void disableCamera()
+    {
+        this.removeView(this._viewFinder);
+        this._viewFinder=null;
+    }
+
+    public void enableCamera()
+    {
+        this.setCameraType(2);
     }
 
     public void setCameraType(final int type) {
@@ -68,14 +81,15 @@ public class RCTCameraView extends ViewGroup {
             this._viewFinder.setCameraType(type);
             RCTCamera.getInstance().adjustPreviewLayout(type);
         } else {
-            _viewFinder = new RCTCameraViewFinder(_context, type);
+            this._viewFinder = new RCTCameraViewFinder(_context, type);
             if (-1 != this._flashMode) {
-                _viewFinder.setFlashMode(this._flashMode);
+                this._viewFinder.setFlashMode(this._flashMode);
             }
             if (-1 != this._torchMode) {
-                _viewFinder.setFlashMode(this._torchMode);
+                this._viewFinder.setFlashMode(this._torchMode);
             }
-            addView(_viewFinder);
+            this._viewFinder.layout(this.getLeft(), this.getTop(), this.getRight(), this.getBottom());
+            this.addView(this._viewFinder,0);
         }
     }
 

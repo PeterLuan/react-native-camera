@@ -8,9 +8,14 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 
 import java.util.List;
 import java.util.ArrayList;
+import com.facebook.react.common.MapBuilder;
+import com.facebook.infer.annotation.Assertions;
 
+import java.util.Map;
 public class RCTCameraViewManager extends ViewGroupManager<RCTCameraView> {
     private static final String REACT_CLASS = "RCTCamera";
+    public static final int Disable_Camera = 2;
+    public static final int Enable_Camera = 1;
 
     @Override
     public String getName() {
@@ -39,7 +44,7 @@ public class RCTCameraViewManager extends ViewGroupManager<RCTCameraView> {
 
     @ReactProp(name = "type")
     public void setType(RCTCameraView view, int type) {
-        view.setCameraType(type);
+        //view.setCameraType(type);
     }
 
     @ReactProp(name = "captureQuality")
@@ -83,4 +88,36 @@ public class RCTCameraViewManager extends ViewGroupManager<RCTCameraView> {
         }
         view.setBarCodeTypes(result);
     }
+
+
+    @Override
+    public Map<String,Integer> getCommandsMap() {
+    return MapBuilder.of("enableCamera",Enable_Camera,"disableCamera",Disable_Camera);
+    }
+
+    @Override
+    public void receiveCommand(
+        RCTCameraView view,
+        int commandType,
+        @Nullable ReadableArray args) {
+        switch (commandType) {
+        case Enable_Camera: {
+          Assertions.assertNotNull(view);
+          Assertions.assertNotNull(args);
+          view.enableCamera();
+          return;
+        }
+        case Disable_Camera: {
+          Assertions.assertNotNull(view);
+          Assertions.assertNotNull(args);
+          view.disableCamera();
+          return;
+        }
+        default:
+            throw new IllegalArgumentException(String.format(
+                    "Unsupported command %d received by %s.",
+                    commandType,
+                    getClass().getSimpleName()));
+    }
+}
 }

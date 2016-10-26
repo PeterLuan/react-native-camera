@@ -9,8 +9,12 @@ import {
   View,
 } from 'react-native';
 
+var UIManager = require('UIManager');
+var ReactNative = require('react/lib/ReactNative');
+
 const CameraManager = NativeModules.CameraManager || NativeModules.CameraModule;
 const CAMERA_REF = 'camera';
+const RCTCamera = requireNativeComponent('RCTCamera', Camera);
 
 function convertNativeProps(props) {
   const newProps = { ...props };
@@ -248,11 +252,25 @@ export default class Camera extends Component {
     }
     return CameraManager.hasFlash();
   }
+
+  enableCamera(){
+        UIManager.dispatchViewManagerCommand(
+        ReactNative.findNodeHandle(this),
+        UIManager.RCTCamera.Commands.enableCamera,
+        [],
+    );
+  }
+
+  disableCamera(){
+        UIManager.dispatchViewManagerCommand(
+        ReactNative.findNodeHandle(this),
+        UIManager.RCTCamera.Commands.disableCamera,
+        [],
+    );
+   }
 }
 
 export const constants = Camera.constants;
-
-const RCTCamera = requireNativeComponent('RCTCamera', Camera);
 
 const styles = StyleSheet.create({
   base: {},
