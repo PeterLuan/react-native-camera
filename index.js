@@ -7,10 +7,10 @@ import {
   StyleSheet,
   requireNativeComponent,
   View,
+  UIManager,
 } from 'react-native';
 
-var UIManager = require('UIManager');
-var ReactNative = require('react/lib/ReactNative');
+var ReactNative = require('react-native')
 
 const CameraManager = NativeModules.CameraManager || NativeModules.CameraModule;
 const CAMERA_REF = 'camera';
