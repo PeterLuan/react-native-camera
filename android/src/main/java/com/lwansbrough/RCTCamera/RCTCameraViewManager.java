@@ -24,7 +24,9 @@ public class RCTCameraViewManager extends ViewGroupManager<RCTCameraView> {
 
     @Override
     public RCTCameraView createViewInstance(ThemedReactContext context) {
-        return new RCTCameraView(context);
+        RCTCameraView view=new RCTCameraView(context);
+        view.setBackgroundColor(0xFF000000);
+        return view;
     }
 
     @ReactProp(name = "aspect")
